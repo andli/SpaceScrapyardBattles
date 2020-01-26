@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98dc623318978e4c8ceaa8ec8aac864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 49beb8dd3477b5648ae8c66febff2be8, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: 49beb8dd3477b5648ae8c66febff2be8, type: 2}
 --- !u!61 &2082884838789509935
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.65077823
+  m_Radius: 0.59999776
 --- !u!1 &2082884839623892659
 GameObject:
   m_ObjectHideFlags: 0

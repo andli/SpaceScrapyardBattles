@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class OutlineEffect : MonoBehaviour
 {
-    [SerializeField] private Material material;
+    [SerializeField] private Material outlineMaterial;
+    private Material originalMaterial;
 
     private float outlineThickness;
-    private float fadeSpeed = 1f;
+    private float fadeSpeed = 8f;
     private bool isOutlined;
 
     private void Update()
@@ -15,13 +16,13 @@ public class OutlineEffect : MonoBehaviour
         if (isOutlined)
         {
             outlineThickness = Mathf.Clamp01(outlineThickness + fadeSpeed * Time.deltaTime);
-            material.SetFloat("_OutlineThickness", outlineThickness);
+            outlineMaterial.SetFloat("_OutlineThickness", outlineThickness);
 
         }
         else
         {
             outlineThickness = Mathf.Clamp01(outlineThickness - fadeSpeed * Time.deltaTime);
-            material.SetFloat("_OutlineThickness", outlineThickness);
+            outlineMaterial.SetFloat("_OutlineThickness", outlineThickness);
 
         }
 
@@ -33,7 +34,7 @@ public class OutlineEffect : MonoBehaviour
         if (!isOutlined)
         {
             isOutlined = true;
-
+            this.setMaterialOnNamedRenderer("Background", outlineMaterial);
         }
     }
     public void StopOutlining()
@@ -42,7 +43,21 @@ public class OutlineEffect : MonoBehaviour
         if (isOutlined)
         {
             isOutlined = false;
+            this.setMaterialOnNamedRenderer("Background", originalMaterial);
+        }
+    }
 
+    private void setMaterialOnNamedRenderer(string name, Material material)
+    {
+        SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
+
+        foreach (SpriteRenderer spriteRenderer in rs)
+        {
+            if (spriteRenderer.name == name)
+            {
+                originalMaterial = spriteRenderer.material;
+                spriteRenderer.material = material;
+            }
         }
     }
 }

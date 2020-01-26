@@ -187,6 +187,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2082884838789509932, guid: 540f554062f275d4fa1cc9d4cc878bc1,
+        type: 3}
+      propertyPath: outlineMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 49beb8dd3477b5648ae8c66febff2be8, type: 2}
     - target: {fileID: 2082884838789509933, guid: 540f554062f275d4fa1cc9d4cc878bc1,
         type: 3}
       propertyPath: shipPart
@@ -231,7 +236,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.108935565, g: 0.12527195, b: 0.1509434, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
