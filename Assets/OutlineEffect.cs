@@ -30,7 +30,6 @@ public class OutlineEffect : MonoBehaviour
 
     public void StartOutlining()
     {
-        Debug.Log("Outline start");
         if (!isOutlined)
         {
             isOutlined = true;
@@ -39,7 +38,6 @@ public class OutlineEffect : MonoBehaviour
     }
     public void StopOutlining()
     {
-        Debug.Log("Outline STOP");
         if (isOutlined)
         {
             isOutlined = false;

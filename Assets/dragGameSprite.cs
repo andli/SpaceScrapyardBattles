@@ -8,22 +8,33 @@ public class dragGameSprite : MonoBehaviour
 
     void OnMouseDown()
     {
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-        GetComponent<ShipPartDisplay>().setDragging(true);
-
+        if (!GetComponent<ShipPartDisplay>().shipPart.isAttached)
+        {
+            offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+            GetComponent<ShipPartDisplay>().setDragging(true);
+        }
     }
 
     void OnMouseDrag()
     {
-        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-        transform.position = curPosition;
+        if (!GetComponent<ShipPartDisplay>().shipPart.isAttached)
+        {
+            Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+            transform.position = curPosition;
+        }
     }
 
     void OnMouseUp()
     {
-        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-        GetComponent<ShipPartDisplay>().setDragging(false);
+        if (!GetComponent<ShipPartDisplay>().shipPart.isAttached)
+        {
+            offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+            GetComponent<ShipPartDisplay>().setDragging(false);
 
+            ShipPartDisplay shipPartDisplay = GetComponent<ShipPartDisplay>();
+            //TODO: Only attach to closest part
+            GetComponent<ShipPartDisplay>().attach(shipPartDisplay.shipPart);
+        }
     }
 }

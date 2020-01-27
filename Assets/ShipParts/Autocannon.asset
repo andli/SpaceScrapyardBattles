@@ -15,14 +15,10 @@ MonoBehaviour:
   name: Autocannon
   artwork: {fileID: 9032872176879573846, guid: f8c83ae951bb8214c81f6639d616d2f0, type: 3}
   isStartingComponent: 0
-  rotation: {x: -0, y: 0, z: 0}
+  direction: 1
   anchors:
     north: 0
     east: 0
     south: 1
     west: 0
-  attachments:
-    north: 0
-    east: 0
-    south: 0
-    west: 0
+  isAttached: 0

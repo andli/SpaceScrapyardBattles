@@ -10,6 +10,10 @@ public class ShipPartDisplay : MonoBehaviour
     private float rotationCooldown = 0.2f;
     private float keyTimestamp;
     private bool beingDragged = false;
+    private bool inAttachRange = false;
+
+    private Direction attachingDirection { get; set; }
+    private ShipPart attachingTarget { get; set; }
 
     private void FixedUpdate()
     {
@@ -25,11 +29,18 @@ public class ShipPartDisplay : MonoBehaviour
 
     public void rotate90CW()
     {
-        Debug.Log("rotate!");
         SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
-        rs[1].transform.Rotate(new Vector3(0, 0, 90));
+        rs[1].transform.Rotate(new Vector3(0, 0, -90));
 
-        shipPart.rotation = rs[1].transform.rotation.eulerAngles;
+        shipPart.setRotation(rs[1].transform.rotation.eulerAngles);
+    }
+
+    public void attach(ShipPart attachedShipPart)
+    {
+        if (inAttachRange)
+        {
+            GameManager.Instance.player.ship.addShipPart(attachedShipPart, this.attachingTarget, this.attachingDirection);
+        }
     }
 
     public void setDragging(bool isDragging)
@@ -39,14 +50,31 @@ public class ShipPartDisplay : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OutlineEffect outlineEffect = GetComponent<OutlineEffect>();
-        outlineEffect.StartOutlining();
+        if (this.beingDragged || collision.GetComponent<ShipPartDisplay>().beingDragged)
+        {
+            Debug.Log("Outline ON: " + this.name);
+
+            OutlineEffect outlineEffect = GetComponent<OutlineEffect>();
+            outlineEffect.StartOutlining();
+            this.inAttachRange = true;
+        }
+
+        if (this.beingDragged)
+        {
+            Vector3 pos1 = this.gameObject.transform.position;
+            Vector3 pos2 = collision.transform.position;
+            this.attachingDirection = ShipPart.PositionsToDirection(pos1, pos2);
+            this.attachingTarget = collision.gameObject.GetComponentInChildren<ShipPartDisplay>().shipPart;
+        }
     }
+
+    
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         OutlineEffect outlineEffect = GetComponent<OutlineEffect>();
         outlineEffect.StopOutlining();
+        this.inAttachRange = false;
     }
 
     // Start is called before the first frame update
