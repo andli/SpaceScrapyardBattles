@@ -37,7 +37,7 @@ public class ShipPartDisplay : MonoBehaviour
 
     public void attachToPredefinedTarget()
     {
-        if (inAttachRange)
+        if (inAttachRange && this.attachingTarget != null)
         {
             // Add the part to the Ship object
             GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
@@ -56,23 +56,29 @@ public class ShipPartDisplay : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (this.beingDragged || collision.GetComponent<ShipPartDisplay>().beingDragged)
-        {
-            //Debug.Log("Outline ON: " + this.name);
+        ShipPartDisplay collisionTarget = collision.GetComponent<ShipPartDisplay>();
 
-            this.inAttachRange = true;
-            GetComponent<OutlineEffect>().StartOutlining();
- 
-            // Save collision details to use when attaching
-            this.attachingDirection = ShipPart.PositionsToDirection(
-                this.gameObject.transform.position,
-                collision.transform.position
-                );
-            this.attachingTarget = collision.gameObject.GetComponentInChildren<ShipPartDisplay>();
+        if (this.beingDragged || collisionTarget.beingDragged)
+        {
+            if (collisionTarget.inAttachRange)
+            {
+                GetComponent<OutlineEffect>().StartOutlining();
+            }
+            // Only attach a dragged ship part
+            if (this.beingDragged)
+            {
+                // 
+                this.inAttachRange = true;
+
+                // Save collision details to use when attaching after mouse up
+                this.attachingDirection = ShipPart.PositionsToDirection(
+                    this.gameObject.transform.position,
+                    collision.transform.position
+                    );
+                this.attachingTarget = collisionTarget;
+            }
         }
     }
-
-
 
     private void OnTriggerExit2D(Collider2D collision)
     {

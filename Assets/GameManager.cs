@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
     // Declare any public variables that you want to be able 
     // to access throughout your scene
     public Player player;
+
+    public ShipPartDisplay sourceConnector;
+    public ShipPartDisplay targetConnector;
+
     public static GameManager Instance { get; private set; } // static singleton
     void Awake()
     {
