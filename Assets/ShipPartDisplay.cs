@@ -40,6 +40,8 @@ public class ShipPartDisplay : MonoBehaviour
         if (inAttachRange)
         {
             GameManager.Instance.player.ship.addShipPart(attachedShipPart, this.attachingTarget, this.attachingDirection);
+            GetComponent<OutlineEffect>().StopOutlining();
+            this.inAttachRange = false;
         }
     }
 
@@ -54,26 +56,26 @@ public class ShipPartDisplay : MonoBehaviour
         {
             Debug.Log("Outline ON: " + this.name);
 
-            OutlineEffect outlineEffect = GetComponent<OutlineEffect>();
-            outlineEffect.StartOutlining();
+            GetComponent<OutlineEffect>().StartOutlining();
             this.inAttachRange = true;
         }
 
         if (this.beingDragged)
         {
-            Vector3 pos1 = this.gameObject.transform.position;
-            Vector3 pos2 = collision.transform.position;
-            this.attachingDirection = ShipPart.PositionsToDirection(pos1, pos2);
+            // Save collision details to use when attaching
+            this.attachingDirection = ShipPart.PositionsToDirection(
+                this.gameObject.transform.position,
+                collision.transform.position
+                );
             this.attachingTarget = collision.gameObject.GetComponentInChildren<ShipPartDisplay>().shipPart;
         }
     }
 
-    
+
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        OutlineEffect outlineEffect = GetComponent<OutlineEffect>();
-        outlineEffect.StopOutlining();
+        GetComponent<OutlineEffect>().StopOutlining();
         this.inAttachRange = false;
     }
 
@@ -81,7 +83,7 @@ public class ShipPartDisplay : MonoBehaviour
     void Start()
     {
         SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
-     
+
         foreach (SpriteRenderer spriteRenderer in rs)
         {
             if (spriteRenderer.name == "Artwork")
