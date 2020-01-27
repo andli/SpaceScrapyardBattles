@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class OutlineEffect : MonoBehaviour
 {
-    [SerializeField] private Material outlineMaterial;
-    private Material originalMaterial;
+    [SerializeField] public Material outlineMaterial;
+
+    private Material _outlineMaterial = null;
+    private Material originalMaterial = null;
 
     private float outlineThickness;
     private float fadeSpeed = 8f;
@@ -16,36 +18,45 @@ public class OutlineEffect : MonoBehaviour
         if (isOutlined)
         {
             outlineThickness = Mathf.Clamp01(outlineThickness + fadeSpeed * Time.deltaTime);
-            outlineMaterial.SetFloat("_OutlineThickness", outlineThickness);
+            _outlineMaterial.SetFloat("_OutlineThickness", outlineThickness);
 
         }
         else
         {
             outlineThickness = Mathf.Clamp01(outlineThickness - fadeSpeed * Time.deltaTime);
-            outlineMaterial.SetFloat("_OutlineThickness", outlineThickness);
+            _outlineMaterial.SetFloat("_OutlineThickness", outlineThickness);
 
         }
 
+    }
+
+    private void Awake()
+    {
+        if (this._outlineMaterial == null)
+        {
+            this._outlineMaterial = Instantiate(outlineMaterial);
+        }
     }
 
     public void StartOutlining()
     {
         if (!isOutlined)
         {
+            this.originalMaterial = this.getNamedRenderer("Background").material;
+            this.getNamedRenderer("Background").material = _outlineMaterial;
             isOutlined = true;
-            this.setMaterialOnNamedRenderer("Background", outlineMaterial);
         }
     }
     public void StopOutlining()
     {
-        if (isOutlined)
+        if (isOutlined && this.originalMaterial != null)
         {
+            this.getNamedRenderer("Background").material = originalMaterial;
             isOutlined = false;
-            this.setMaterialOnNamedRenderer("Background", originalMaterial);
         }
     }
 
-    private void setMaterialOnNamedRenderer(string name, Material material)
+    private SpriteRenderer getNamedRenderer(string name)
     {
         SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
 
@@ -53,9 +64,9 @@ public class OutlineEffect : MonoBehaviour
         {
             if (spriteRenderer.name == name)
             {
-                originalMaterial = spriteRenderer.material;
-                spriteRenderer.material = material;
+                return spriteRenderer;
             }
         }
+        return null;
     }
 }

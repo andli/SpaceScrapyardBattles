@@ -25,13 +25,18 @@ public class Player : MonoBehaviour
         ship.addStartingShipPart(shipPartDisplay.shipPart);
 
         // Add a couple more objects
-        GameObject go1 = Instantiate<GameObject>(prefab, new Vector3(-1, 2, 0), Quaternion.identity);
-        go1.name = "Autocannon";
-        go1.GetComponent<ShipPartDisplay>().shipPart = Instantiate(AssetDatabase.LoadAssetAtPath<ShipPart>("Assets/ShipParts/Autocannon.asset"));
 
         GameObject go2 = Instantiate<GameObject>(prefab, new Vector3(1, 2, 0), Quaternion.identity);
-        go2.name = "Engine";
-        go2.GetComponent<ShipPartDisplay>().shipPart = Instantiate(AssetDatabase.LoadAssetAtPath<ShipPart>("Assets/ShipParts/Engine.asset"));
+        //go2.name = "Autocannon";
+        go2.GetComponent<ShipPartDisplay>().shipPart = Instantiate(AssetDatabase.LoadAssetAtPath<ShipPart>("Assets/ShipParts/Autocannon.asset"));
+
+        GameObject go1 = Instantiate<GameObject>(prefab, new Vector3(-1, 2, 0), Quaternion.identity);
+        //go1.name = "Engine";
+        go1.GetComponent<ShipPartDisplay>().shipPart = Instantiate(AssetDatabase.LoadAssetAtPath<ShipPart>("Assets/ShipParts/Engine.asset"));
+
+        GameObject go3 = Instantiate<GameObject>(prefab, new Vector3(-3, 2, 0), Quaternion.identity);
+        //go3.name = "Hull-4";
+        go3.GetComponent<ShipPartDisplay>().shipPart = Instantiate(AssetDatabase.LoadAssetAtPath<ShipPart>("Assets/ShipParts/Hull-4.asset"));
     }
 
     // Update is called once per frame

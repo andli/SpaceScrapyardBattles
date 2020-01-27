@@ -13,7 +13,7 @@ public class ShipPartDisplay : MonoBehaviour
     private bool inAttachRange = false;
 
     private Direction attachingDirection { get; set; }
-    private ShipPart attachingTarget { get; set; }
+    private ShipPartDisplay attachingTarget { get; set; }
 
     private void FixedUpdate()
     {
@@ -35,11 +35,15 @@ public class ShipPartDisplay : MonoBehaviour
         shipPart.setRotation(rs[1].transform.rotation.eulerAngles);
     }
 
-    public void attach(ShipPart attachedShipPart)
+    public void attachToPredefinedTarget()
     {
         if (inAttachRange)
         {
-            GameManager.Instance.player.ship.addShipPart(attachedShipPart, this.attachingTarget, this.attachingDirection);
+            // Add the part to the Ship object
+            GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
+
+            // Stop all outline effects
+            this.attachingTarget.GetComponent<OutlineEffect>().StopOutlining();
             GetComponent<OutlineEffect>().StopOutlining();
             this.inAttachRange = false;
         }
@@ -54,20 +58,17 @@ public class ShipPartDisplay : MonoBehaviour
     {
         if (this.beingDragged || collision.GetComponent<ShipPartDisplay>().beingDragged)
         {
-            Debug.Log("Outline ON: " + this.name);
+            //Debug.Log("Outline ON: " + this.name);
 
-            GetComponent<OutlineEffect>().StartOutlining();
             this.inAttachRange = true;
-        }
-
-        if (this.beingDragged)
-        {
+            GetComponent<OutlineEffect>().StartOutlining();
+ 
             // Save collision details to use when attaching
             this.attachingDirection = ShipPart.PositionsToDirection(
                 this.gameObject.transform.position,
                 collision.transform.position
                 );
-            this.attachingTarget = collision.gameObject.GetComponentInChildren<ShipPartDisplay>().shipPart;
+            this.attachingTarget = collision.gameObject.GetComponentInChildren<ShipPartDisplay>();
         }
     }
 

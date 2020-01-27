@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship 
+public class Ship
 {
     private ShipPart[,] parts;
     private int centerX;
@@ -13,7 +13,7 @@ public class Ship
     {
         if (size.x % 2 != 0 && size.y % 2 != 0)
         {
-            parts = new ShipPart[size.x,size.y];
+            parts = new ShipPart[size.x, size.y];
 
             centerX = (int)Math.Ceiling((double)size.x / 2);
             centerY = (int)Math.Ceiling((double)size.y / 2);
@@ -53,6 +53,7 @@ public class Ship
         newPart.pos = new Vector2Int(existingPart.pos.x + xOffset, existingPart.pos.y + yOffset);
         parts[newPart.pos.x, newPart.pos.y] = newPart;
 
+        // Print all items in the ship
         foreach (ShipPart item in parts)
         {
             if (item != null)
@@ -62,7 +63,6 @@ public class Ship
             }
 
         }
-        //TODO: error handling etc
     }
 
     public void addStartingShipPart(ShipPart newPart)
@@ -73,4 +73,5 @@ public class Ship
 
         //TODO: error handling etc
     }
+
 }

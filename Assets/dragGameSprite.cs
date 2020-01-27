@@ -27,14 +27,15 @@ public class dragGameSprite : MonoBehaviour
 
     void OnMouseUp()
     {
-        if (!GetComponent<ShipPartDisplay>().shipPart.isAttached)
+        ShipPartDisplay shipPartDisplay = GetComponent<ShipPartDisplay>();
+
+        if (!shipPartDisplay.shipPart.isAttached)
         {
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-            GetComponent<ShipPartDisplay>().setDragging(false);
+            shipPartDisplay.setDragging(false);
 
-            ShipPartDisplay shipPartDisplay = GetComponent<ShipPartDisplay>();
             //TODO: Only attach to closest part
-            GetComponent<ShipPartDisplay>().attach(shipPartDisplay.shipPart);
+            shipPartDisplay.attachToPredefinedTarget();
         }
     }
 }

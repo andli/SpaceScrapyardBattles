@@ -68,22 +68,24 @@ public class ShipPart : ScriptableObject
 
     public static Direction PositionsToDirection(Vector3 pos1, Vector3 pos2)
     {
+        float innerLimit = 0.1f;
+        float outerLimit = 0.95f;
         Vector3 sum = pos1 - pos2;
         sum = sum.normalized;
 
-        if (sum.y > 0.9 && sum.x >= -0.5 && sum.x <= 0.5)
+        if (sum.y > outerLimit && sum.x >= -innerLimit && sum.x <= innerLimit)
         {
             return Direction.North;
         }
-        else if (sum.x > 0.9 && sum.y >= -0.5 && sum.y <= 0.5)
+        else if (sum.x > outerLimit && sum.y >= -innerLimit && sum.y <= innerLimit)
         {
             return Direction.East;
         }
-        else if (sum.y < -0.9 && sum.x >= -0.5 && sum.x <= 0.5)
+        else if (sum.y < -outerLimit && sum.x >= -innerLimit && sum.x <= innerLimit)
         {
             return Direction.South;
         }
-        else if (sum.x < -0.9 && sum.y >= -0.5 && sum.y <= 0.5)
+        else if (sum.x < -outerLimit && sum.y >= -innerLimit && sum.y <= innerLimit)
         {
             return Direction.West;
         }
