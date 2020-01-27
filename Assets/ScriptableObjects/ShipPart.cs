@@ -91,7 +91,8 @@ public class ShipPart : ScriptableObject
         }
         else
         {
-            throw new System.Exception("Error calculating direction.");
+            return Direction.None;
+            //throw new System.Exception("Error calculating direction.");
         }
     }
 

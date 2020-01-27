@@ -10,7 +10,6 @@ public class ShipPartDisplay : MonoBehaviour
     private float rotationCooldown = 0.2f;
     private float keyTimestamp;
     private bool beingDragged = false;
-    private bool inAttachRange = false;
 
     private Direction attachingDirection { get; set; }
     private ShipPartDisplay attachingTarget { get; set; }
@@ -37,15 +36,17 @@ public class ShipPartDisplay : MonoBehaviour
 
     public void attachToPredefinedTarget()
     {
-        if (inAttachRange && this.attachingTarget != null)
+        if (this.attachingTarget != null)
         {
             // Add the part to the Ship object
             GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
 
             // Stop all outline effects
-            this.attachingTarget.GetComponent<OutlineEffect>().StopOutlining();
-            GetComponent<OutlineEffect>().StopOutlining();
-            this.inAttachRange = false;
+            GameManager.Instance.sourceConnector.GetComponent<OutlineEffect>().StopOutlining();
+            GameManager.Instance.targetConnector.GetComponent<OutlineEffect>().StopOutlining();
+
+            GameManager.Instance.sourceConnector = null;
+            GameManager.Instance.targetConnector = null;
         }
     }
 
@@ -58,17 +59,17 @@ public class ShipPartDisplay : MonoBehaviour
     {
         ShipPartDisplay collisionTarget = collision.GetComponent<ShipPartDisplay>();
 
-        if (this.beingDragged || collisionTarget.beingDragged)
+        if (this.beingDragged)
         {
-            if (collisionTarget.inAttachRange)
+            if (GameManager.Instance.sourceConnector == null && GameManager.Instance.targetConnector == null)
             {
-                GetComponent<OutlineEffect>().StartOutlining();
-            }
-            // Only attach a dragged ship part
-            if (this.beingDragged)
-            {
-                // 
-                this.inAttachRange = true;
+                GameManager.Instance.sourceConnector = this;
+                GameManager.Instance.targetConnector = collisionTarget;
+
+                this.GetComponent<OutlineEffect>().StartOutlining();
+                collisionTarget.GetComponent<OutlineEffect>().StartOutlining();
+
+                // Only attach a dragged ship part
 
                 // Save collision details to use when attaching after mouse up
                 this.attachingDirection = ShipPart.PositionsToDirection(
@@ -76,6 +77,7 @@ public class ShipPartDisplay : MonoBehaviour
                     collision.transform.position
                     );
                 this.attachingTarget = collisionTarget;
+
             }
         }
     }
@@ -83,7 +85,9 @@ public class ShipPartDisplay : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         GetComponent<OutlineEffect>().StopOutlining();
-        this.inAttachRange = false;
+
+        GameManager.Instance.sourceConnector = null;
+        GameManager.Instance.targetConnector = null;
     }
 
     // Start is called before the first frame update

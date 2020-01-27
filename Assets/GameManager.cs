@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     // to access throughout your scene
     public Player player;
 
-    public ShipPartDisplay sourceConnector;
-    public ShipPartDisplay targetConnector;
+    public ShipPartDisplay sourceConnector = null;
+    public ShipPartDisplay targetConnector = null;
 
     public static GameManager Instance { get; private set; } // static singleton
     void Awake()
