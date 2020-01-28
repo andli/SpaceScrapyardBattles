@@ -61,18 +61,18 @@ public class Ship
 
     }
 
-    public bool getMatchingAnchor(Vector2Int potentialPosition, KeyValuePair<Direction, bool> checkAnchorInDirection)
+    public (bool, bool) getMatchingAnchorAndMatchType(Vector2Int potentialPosition, KeyValuePair<Direction, bool> checkAnchorInDirection)
     {
         Vector2Int checkVector = Directions.directionToVector(checkAnchorInDirection.Key);
 
         ShipPart part = this.getPartAtPosition(potentialPosition + checkVector);
         // No part means we don't have to match in that direction
-        if (part == null) return true;
+        if (part == null) return (true, true);
 
         Direction reverseDirection = Directions.vectorToDirection(-checkVector);
         bool reverseDirectionAnchorValue = part.getAnchorInDirection(reverseDirection);
 
-        return reverseDirectionAnchorValue && checkAnchorInDirection.Value;
+        return (reverseDirectionAnchorValue, checkAnchorInDirection.Value);
     }
 
     public void addShipPart(ShipPart newPart, ShipPart existingPart, Direction targetSide)

@@ -28,6 +28,16 @@ public struct Directions
         return response;
     }
 
+    public void RotateAnchors90CW()
+    {
+        bool originalNorth = this.north;
+
+        this.north = this.west;
+        this.west = this.south;
+        this.south = this.east;
+        this.east = originalNorth;
+    }
+
     public static Vector2Int directionToVector(Direction dir)
     {
         switch (dir)
@@ -128,6 +138,7 @@ public class ShipPart : ScriptableObject
     {
         this.rotation = eulerAngles;
         this.direction = RotationToDirection(eulerAngles);
+        this.anchors.RotateAnchors90CW();
     }
 
     public static Direction RotationToDirection(Vector3 rotation)

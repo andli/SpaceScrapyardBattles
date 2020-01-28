@@ -14,6 +14,7 @@ public class ShipPartDisplay : MonoBehaviour
 
     private Direction attachingDirection { get; set; }
     private ShipPartDisplay attachingTarget { get; set; }
+    public bool BeingDragged { get => beingDragged; set => beingDragged = value; }
 
     private void FixedUpdate()
     {
@@ -81,13 +82,6 @@ public class ShipPartDisplay : MonoBehaviour
 
     }
 
-    public void setDragging(bool isDragging)
-    {
-        this.beingDragged = isDragging;
-    }
-
-
-
     private bool isValidAttachment(ShipPartDisplay collisionTarget)
     {
         // Get potential slot in the ship array
@@ -108,10 +102,15 @@ public class ShipPartDisplay : MonoBehaviour
         }
 
         // Check each side of dragged part that has anchors
+        bool atLeastOneAnchorMatch = false;
         foreach (var item in this.shipPart.anchors.GetAll())
         {
-            bool anchorOk = GameManager.Instance.player.ship.getMatchingAnchor(potentialPosition, item);
-            if (!anchorOk)
+            (bool, bool) anchorMatch = GameManager.Instance.player.ship.getMatchingAnchorAndMatchType(potentialPosition, item);
+            if (anchorMatch.Item1 && anchorMatch.Item2)
+            {
+                atLeastOneAnchorMatch = true;
+            }
+            if (anchorMatch.Item1 != anchorMatch.Item2)
             {
                 Debug.Log($"{item.Key} anchor NOT ok at {potentialPosition}.");
                 return false;
@@ -119,7 +118,7 @@ public class ShipPartDisplay : MonoBehaviour
         }
 
         Debug.Log("Valid attachment!");
-        return true;
+        return atLeastOneAnchorMatch;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
