@@ -37,7 +37,7 @@ public class ShipPartDisplay : MonoBehaviour
 
     public void attachToPredefinedTarget()
     {
-        if (this.attachingTarget != null)
+        if (this.attachingTarget != null && GameManager.Instance.sourceConnector != null && GameManager.Instance.targetConnector != null)
         {
             // Add the part to the Ship object
             GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
