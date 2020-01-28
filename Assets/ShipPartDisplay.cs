@@ -37,19 +37,23 @@ public class ShipPartDisplay : MonoBehaviour
 
     public void attachToPredefinedTarget()
     {
-        if (this.attachingTarget != null && GameManager.Instance.sourceConnector != null && GameManager.Instance.targetConnector != null)
+        // Only attach to already stuck parts
+        if (this.attachingTarget.shipPart.isAttached)
         {
-            // Add the part to the Ship object
-            GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
+            if (this.attachingTarget != null && GameManager.Instance.sourceConnector != null && GameManager.Instance.targetConnector != null)
+            {
+                // Add the part to the Ship object
+                GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
 
-            // Stop all outline effects
-            GameManager.Instance.sourceConnector.GetComponent<OutlineEffect>().StopOutlining();
-            GameManager.Instance.targetConnector.GetComponent<OutlineEffect>().StopOutlining();
+                // Stop all outline effects
+                GameManager.Instance.sourceConnector.GetComponent<OutlineEffect>().StopOutlining();
+                GameManager.Instance.targetConnector.GetComponent<OutlineEffect>().StopOutlining();
 
-            GameManager.Instance.sourceConnector = null;
-            GameManager.Instance.targetConnector = null;
+                GameManager.Instance.sourceConnector = null;
+                GameManager.Instance.targetConnector = null;
 
-            snapToTarget(this.attachingTarget);
+                snapToTarget(this.attachingTarget);
+            }
         }
     }
 
@@ -82,7 +86,7 @@ public class ShipPartDisplay : MonoBehaviour
     {
         ShipPartDisplay collisionTarget = collision.GetComponent<ShipPartDisplay>();
 
-        if (this.beingDragged)
+        if (this.beingDragged && collisionTarget.shipPart.isAttached)
         {
             if (GameManager.Instance.sourceConnector == null && GameManager.Instance.targetConnector == null)
             {

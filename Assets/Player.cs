@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 
         GameObject shipPartPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ShipPart.prefab");
 
-        GameObject cockpit = Instantiate<GameObject>(shipPartPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject cockpit = Instantiate<GameObject>(shipPartPrefab, new Vector3(0, -2, 0), Quaternion.identity);
         cockpit.name = "Cockpit";
         //TODO: Freeze the cockpit in place
         //cockpit.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
@@ -25,10 +25,12 @@ public class Player : MonoBehaviour
         ship.addStartingShipPart(shipPartDisplay.shipPart);
 
         // Add a couple more objects
-        GameObject go1 = tmpSpawnPart(shipPartPrefab, new Vector3(1, 2, 0), "Autocannon");
-        GameObject go2 = tmpSpawnPart(shipPartPrefab, new Vector3(-1, 2, 0), "Engine");
-        GameObject go3 = tmpSpawnPart(shipPartPrefab, new Vector3(-3, 2, 0), "Hull-4");
-        GameObject go4 = tmpSpawnPart(shipPartPrefab, new Vector3(3, 2, 0), "Hull-2");
+        GameObject go1 = tmpSpawnPart(shipPartPrefab, new Vector3(-3.5f, 2, 0), "Hull-4");
+        GameObject go2 = tmpSpawnPart(shipPartPrefab, new Vector3(-2f, 2, 0), "Engine");
+        GameObject go3 = tmpSpawnPart(shipPartPrefab, new Vector3(-0.5f, 2, 0), "Autocannon");
+        GameObject go4 = tmpSpawnPart(shipPartPrefab, new Vector3(1, 2, 0), "Hull-2");
+        GameObject go5 = tmpSpawnPart(shipPartPrefab, new Vector3(2.5f, 2, 0), "Lasercannon");
+        GameObject go6 = tmpSpawnPart(shipPartPrefab, new Vector3(4, 2, 0), "Hull-3");
     }
 
     private GameObject tmpSpawnPart(GameObject shipPartPrefab, Vector3 pos, string name) { 
