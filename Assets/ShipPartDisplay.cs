@@ -38,19 +38,23 @@ public class ShipPartDisplay : MonoBehaviour
     public void attachToPredefinedTarget()
     {
         // Only attach to already stuck parts
-        if (this.attachingTarget.shipPart.isAttached)
+        if (this.attachingTarget != null && this.isValidAttachment(this.attachingTarget))
         {
-            if (this.attachingTarget != null && GameManager.Instance.sourceConnector != null && GameManager.Instance.targetConnector != null)
+            if (GameManager.Instance.connectionTargets.Contains(this) && GameManager.Instance.connectionTargets.Contains(this.attachingTarget))
             {
                 // Add the part to the Ship object
                 GameManager.Instance.player.ship.addShipPart(this.shipPart, this.attachingTarget.shipPart, this.attachingDirection);
 
                 // Stop all outline effects
-                GameManager.Instance.sourceConnector.GetComponent<OutlineEffect>().StopOutlining();
-                GameManager.Instance.targetConnector.GetComponent<OutlineEffect>().StopOutlining();
+                List<ShipPartDisplay> partsToRemove = new List<ShipPartDisplay>();
+                foreach (ShipPartDisplay item in GameManager.Instance.connectionTargets)
+                {
+                    item.GetComponent<OutlineEffect>().StopOutlining();
+                    partsToRemove.Add(item);
+                }
 
-                GameManager.Instance.sourceConnector = null;
-                GameManager.Instance.targetConnector = null;
+                // Remove involved parts from list of connections
+                GameManager.Instance.ClearConnectionTargets(partsToRemove);
 
                 snapToTarget(this.attachingTarget);
             }
@@ -82,29 +86,64 @@ public class ShipPartDisplay : MonoBehaviour
         this.beingDragged = isDragging;
     }
 
+
+
+    private bool isValidAttachment(ShipPartDisplay collisionTarget)
+    {
+        // Get potential slot in the ship array
+        Vector2Int potentialPosition;
+        try
+        {
+            potentialPosition = GameManager.Instance.player.ship.getShipPartCoordinate(collisionTarget.shipPart,
+            ShipPart.PositionsToDirection(
+                this.gameObject.transform.position,
+                collisionTarget.transform.position
+                )
+            );
+        }
+        catch (Exception ex)
+        {
+            Debug.Log("Invalid attachment." + ex.Message);
+            return false;
+        }
+
+        // Check each side of dragged part that has anchors
+        foreach (var item in this.shipPart.anchors.GetAll())
+        {
+            bool anchorOk = GameManager.Instance.player.ship.getMatchingAnchor(potentialPosition, item);
+            if (!anchorOk)
+            {
+                Debug.Log($"{item.Key} anchor NOT ok at {potentialPosition}.");
+                return false;
+            }
+        }
+
+        Debug.Log("Valid attachment!");
+        return true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         ShipPartDisplay collisionTarget = collision.GetComponent<ShipPartDisplay>();
 
-        if (this.beingDragged && collisionTarget.shipPart.isAttached)
-        {
-            if (GameManager.Instance.sourceConnector == null && GameManager.Instance.targetConnector == null)
-            {
-                GameManager.Instance.sourceConnector = this;
-                GameManager.Instance.targetConnector = collisionTarget;
+        // 1. Maintain global list of collision objects
+        GameManager.Instance.AddConnectionTarget(this);
 
+        // 2. See if dragged part has valid or no anchors on all sides
+        if (this.beingDragged)
+        {
+            if (this.isValidAttachment(collisionTarget))
+            {
+                // 3. Enable outline effect
                 this.GetComponent<OutlineEffect>().StartOutlining();
                 collisionTarget.GetComponent<OutlineEffect>().StartOutlining();
 
-                // Only attach a dragged ship part
-
-                // Save collision details to use when attaching after mouse up
+                // 4. Save dragged part as attaching candidate if user does mouse up
                 this.attachingDirection = ShipPart.PositionsToDirection(
                     this.gameObject.transform.position,
                     collision.transform.position
                     );
                 this.attachingTarget = collisionTarget;
-
             }
         }
     }
@@ -113,8 +152,8 @@ public class ShipPartDisplay : MonoBehaviour
     {
         GetComponent<OutlineEffect>().StopOutlining();
 
-        GameManager.Instance.sourceConnector = null;
-        GameManager.Instance.targetConnector = null;
+        GameManager.Instance.connectionTargets.Remove(this);
+
     }
 
     // Start is called before the first frame update

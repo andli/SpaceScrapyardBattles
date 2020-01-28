@@ -26,31 +26,60 @@ public class Ship
         }
     }
 
-    public void addShipPart(ShipPart newPart, ShipPart existingPart, Direction attachingDirection)
+    public Vector2Int getShipPartCoordinate(ShipPart existingPart, Direction targetSide)
     {
-        int xOffset = 0;
-        int yOffset = 0;
-        switch (attachingDirection)
+        if (existingPart.pos.Equals(Vector2Int.zero))
         {
-            case Direction.North:
-                yOffset = 1;
-                break;
-            case Direction.East:
-                xOffset = 1;
-                break;
-            case Direction.South:
-                yOffset = -1;
-                break;
-            case Direction.West:
-                xOffset = -1;
-                break;
-            default:
-                break;
+            throw new Exception("not a valid target shippart.");
         }
 
+        Vector2Int offset = new Vector2Int(0, 0);
+        switch (targetSide)
+        {
+            case Direction.North:
+                offset = Vector2Int.up;
+                break;
+            case Direction.East:
+                offset = Vector2Int.right;
+                break;
+            case Direction.South:
+                offset = Vector2Int.down;
+                break;
+            case Direction.West:
+                offset = Vector2Int.left;
+                break;
+            default:
+                throw new Exception("not a valid direction");
+        }
+
+        return existingPart.pos + offset;
+    }
+
+    public ShipPart getPartAtPosition(Vector2Int pos)
+    {
+        return parts[pos.x, pos.y];
+
+    }
+
+    public bool getMatchingAnchor(Vector2Int potentialPosition, KeyValuePair<Direction, bool> checkAnchorInDirection)
+    {
+        Vector2Int checkVector = Directions.directionToVector(checkAnchorInDirection.Key);
+
+        ShipPart part = this.getPartAtPosition(potentialPosition + checkVector);
+        // No part means we don't have to match in that direction
+        if (part == null) return true;
+
+        Direction reverseDirection = Directions.vectorToDirection(-checkVector);
+        bool reverseDirectionAnchorValue = part.getAnchorInDirection(reverseDirection);
+
+        return reverseDirectionAnchorValue && checkAnchorInDirection.Value;
+    }
+
+    public void addShipPart(ShipPart newPart, ShipPart existingPart, Direction targetSide)
+    {
+        newPart.pos = this.getShipPartCoordinate(existingPart, targetSide);
         newPart.isAttached = true;
 
-        newPart.pos = new Vector2Int(existingPart.pos.x + xOffset, existingPart.pos.y + yOffset);
         parts[newPart.pos.x, newPart.pos.y] = newPart;
 
         // Print all items in the ship

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public struct Directions
@@ -13,15 +14,71 @@ public struct Directions
     {
         return north || east || south || west;
     }
+
+    public Dictionary<Direction, bool> GetAll()
+    {
+        Dictionary<Direction, bool> response = new Dictionary<Direction, bool>
+        {
+            { Direction.North, this.north },
+            { Direction.East, this.east },
+            { Direction.South, this.south },
+            { Direction.West, this.west }
+        };
+
+        return response;
+    }
+
+    public static Vector2Int directionToVector(Direction dir)
+    {
+        switch (dir)
+        {
+            case Direction.North:
+                return Vector2Int.up;
+            case Direction.East:
+                return Vector2Int.right;
+            case Direction.South:
+                return Vector2Int.down;
+            case Direction.West:
+                return Vector2Int.left;
+            case Direction.None:
+            default:
+                throw new Exception("Unable to parse vector from direction.");
+        }
+    }
+
+    public static Direction vectorToDirection(Vector2Int v)
+    {
+        if (v.Equals(Vector2Int.up))
+        {
+            return Direction.North;
+        }
+        if (v.Equals(Vector2Int.right))
+        {
+            return Direction.East;
+        }
+        if (v.Equals(Vector2Int.down))
+        {
+            return Direction.South;
+        }
+        if (v.Equals(Vector2Int.left))
+        {
+            return Direction.West;
+        }
+        else
+        {
+            throw new Exception("Unable to parse direction from vector.");
+        }
+    }
 }
+
 
 public enum Direction : ushort
 {
-    None = 0,
-    North = 1,
-    East = 2,
-    South = 3,
-    West = 4,
+    None,
+    North,
+    East,
+    South,
+    West,
 }
 
 
@@ -31,6 +88,30 @@ public class ShipPart : ScriptableObject
     new public string name = "New item";
 
     public Sprite artwork;
+
+    internal bool getAnchorInDirection(Direction dir)
+    {
+        if (dir == Direction.North)
+        {
+            return this.anchors.north;
+        }
+        else if (dir == Direction.East)
+        {
+            return this.anchors.east;
+        }
+        else if (dir == Direction.South)
+        {
+            return this.anchors.south;
+        }
+        else if (dir == Direction.West)
+        {
+            return this.anchors.west;
+        }
+        else
+        {
+            throw new Exception("Invalid direction.");
+        }
+    }
 
     public bool isStartingComponent = false;
 
@@ -47,7 +128,7 @@ public class ShipPart : ScriptableObject
     {
         this.rotation = eulerAngles;
         this.direction = RotationToDirection(eulerAngles);
-     }
+    }
 
     public static Direction RotationToDirection(Vector3 rotation)
     {
