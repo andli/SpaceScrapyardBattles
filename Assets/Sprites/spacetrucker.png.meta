@@ -14,6 +14,33 @@ TextureImporter:
   - first:
       213: -4596746911558131867
     second: spacetrucker_3
+  - first:
+      213: 2924378004629676276
+    second: spacetrucker_0
+  - first:
+      213: -2579707715105900749
+    second: spacetrucker_1
+  - first:
+      213: 919537107066661086
+    second: spacetrucker_2
+  - first:
+      213: -6313569470188983592
+    second: spacetrucker_3
+  - first:
+      213: -3717941576885944288
+    second: spacetrucker_4
+  - first:
+      213: 1815919913628818976
+    second: spacetrucker_5
+  - first:
+      213: -1699740686012004226
+    second: spacetrucker_6
+  - first:
+      213: -4462936863115173149
+    second: spacetrucker_7
+  - first:
+      213: 1436310662270019564
+    second: spacetrucker_8
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -114,18 +141,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
+        y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9856a5e420f5a347b4f0214ff3fd7fa
-      internalID: 5025233001530196360
+      spriteID: 4f0eaea1d4a759820800000000000000
+      internalID: 2924378004629676276
       vertices: []
       indices: 
       edges: []
@@ -135,18 +162,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 16
+        y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fdb5047c5e50afb479b847fc962ffab7
-      internalID: -4384009012144664548
+      spriteID: 33737c04089033cd0800000000000000
+      internalID: -2579707715105900749
       vertices: []
       indices: 
       edges: []
@@ -155,19 +182,19 @@ TextureImporter:
       name: spacetrucker_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 32
+        y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9f6157cd548709448a42b6346cce0246
-      internalID: 9032872176879573846
+      spriteID: ed8af70802ad2cc00800000000000000
+      internalID: 919537107066661086
       vertices: []
       indices: 
       edges: []
@@ -176,19 +203,124 @@ TextureImporter:
       name: spacetrucker_3
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 0
+        y: 16
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74eaf6c79ba562841964fcd1054b617c
-      internalID: -4596746911558131867
+      spriteID: 8da62a08402b168a0800000000000000
+      internalID: -6313569470188983592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spacetrucker_4
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 020ce0695d7376cc0800000000000000
+      internalID: -3717941576885944288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spacetrucker_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02e57605a81733910800000000000000
+      internalID: 1815919913628818976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spacetrucker_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e78c9f70ade4968e0800000000000000
+      internalID: -1699740686012004226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spacetrucker_7
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e2260391967012c0800000000000000
+      internalID: -4462936863115173149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spacetrucker_8
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce7e5bbffeccee310800000000000000
+      internalID: 1436310662270019564
       vertices: []
       indices: 
       edges: []
