@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,7 +48,29 @@ public class ShipPartDisplay : MonoBehaviour
 
             GameManager.Instance.sourceConnector = null;
             GameManager.Instance.targetConnector = null;
+
+            snapToTarget(this.attachingTarget);
         }
+    }
+
+    private void snapToTarget(ShipPartDisplay target)
+    {
+        Vector3 delta = this.transform.position - target.transform.position;
+
+        float movedX = (float)Math.Round(Math.Abs(delta.x)) * 0.9f;
+        float movedY = (float)Math.Round(Math.Abs(delta.y)) * 0.9f;
+
+        if (delta.x < 0)
+        {
+            movedX = -movedX;
+        }
+        if (delta.y < 0)
+        {
+            movedY = -movedY;
+        }
+
+        this.transform.position = target.transform.position + new Vector3(movedX, movedY, 0);
+
     }
 
     public void setDragging(bool isDragging)
