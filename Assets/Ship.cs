@@ -82,16 +82,6 @@ public class Ship
 
         parts[newPart.pos.x, newPart.pos.y] = newPart;
 
-        // Print all items in the ship
-        foreach (ShipPart item in parts)
-        {
-            if (item != null)
-            {
-                Debug.Log(item);
-
-            }
-
-        }
     }
 
     public void addStartingShipPart(ShipPart newPart)
@@ -100,7 +90,6 @@ public class Ship
         newPart.isAttached = true;
         parts[this.centerX, this.centerY] = newPart;
 
-        //TODO: error handling etc
     }
 
 }
