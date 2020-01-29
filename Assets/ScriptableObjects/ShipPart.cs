@@ -160,7 +160,7 @@ public class ShipPart : ScriptableObject
 
     public static Direction PositionsToDirection(Vector3 pos1, Vector3 pos2)
     {
-        float innerLimit = 0.1f;
+        float innerLimit = 0.4f;
         float outerLimit = 0.95f;
         Vector3 sum = pos1 - pos2;
         sum = sum.normalized;

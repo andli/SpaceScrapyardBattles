@@ -67,7 +67,7 @@ public class Ship
 
         ShipPart part = this.getPartAtPosition(potentialPosition + checkVector);
         // No part means we don't have to match in that direction
-        if (part == null) return (true, true);
+        if (part == null) return (false, false);
 
         Direction reverseDirection = Directions.vectorToDirection(-checkVector);
         bool reverseDirectionAnchorValue = part.getAnchorInDirection(reverseDirection);
