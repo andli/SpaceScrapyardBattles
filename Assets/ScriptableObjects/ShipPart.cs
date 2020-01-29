@@ -79,6 +79,24 @@ public struct Directions
             throw new Exception("Unable to parse direction from vector.");
         }
     }
+
+    public static Direction Reverse(Direction dir)
+    {
+        switch (dir)
+        {
+            case Direction.North:
+                return Direction.South;
+            case Direction.East:
+                return Direction.West;
+            case Direction.South:
+                return Direction.North;
+            case Direction.West:
+                return Direction.East;
+            case Direction.None:
+            default:
+                throw new Exception("Invalid direction.");
+        }
+    }
 }
 
 
@@ -98,6 +116,31 @@ public class ShipPart : ScriptableObject
     new public string name = "New item";
 
     public Sprite artwork;
+
+    internal bool getAnchorTowardsPosition(Vector2Int targetPosition)
+    {
+        Vector2Int delta = this.pos - targetPosition;
+        if (delta == Vector2Int.up)
+        {
+            return this.anchors.south;
+        }
+        else if (delta == Vector2Int.right)
+        {
+            return this.anchors.west;
+        }
+        else if (delta == Vector2Int.down)
+        {
+            return this.anchors.north;
+        }
+        else if (delta == Vector2Int.left)
+        {
+            return this.anchors.east;
+        }
+        else
+        {
+            throw new Exception("Invalid direction.");
+        }
+    }
 
     internal bool getAnchorInDirection(Direction dir)
     {
@@ -161,7 +204,7 @@ public class ShipPart : ScriptableObject
     public static Direction PositionsToDirection(Vector3 pos1, Vector3 pos2)
     {
         float innerLimit = 0.4f;
-        float outerLimit = 0.95f;
+        float outerLimit = 0.1f;
         Vector3 sum = pos1 - pos2;
         sum = sum.normalized;
 
@@ -186,6 +229,11 @@ public class ShipPart : ScriptableObject
             return Direction.None;
             //throw new System.Exception("Error calculating direction.");
         }
+    }
+
+    internal bool getAnchorInDirection(object p)
+    {
+        throw new NotImplementedException();
     }
 
     public override string ToString()

@@ -38,4 +38,9 @@ public class GameManager : MonoBehaviour
             this.connectionTargets.Remove(item);
         }
     }
+
+    internal void ClearAllConnectionTargets()
+    {
+        this.connectionTargets.Clear();   
+    }
 }
