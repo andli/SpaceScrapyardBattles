@@ -14,8 +14,17 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; } // static singleton
     void Awake()
     {
-        if (Instance == null) { Instance = this; }
-        else { Destroy(gameObject); }
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
         // Cache references to all desired variables
         player = FindObjectOfType<Player>();
 
@@ -41,6 +50,6 @@ public class GameManager : MonoBehaviour
 
     internal void ClearAllConnectionTargets()
     {
-        this.connectionTargets.Clear();   
+        this.connectionTargets.Clear();
     }
 }
