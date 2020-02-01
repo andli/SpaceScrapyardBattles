@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
         GameObject shipPartPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ShipPart.prefab");
 
         GameObject cockpit = Instantiate<GameObject>(shipPartPrefab, new Vector3(0, -2, 0), Quaternion.identity);
-        cockpit.name = "Cockpit";
-        //TODO: Freeze the cockpit in place
+        cockpit.name = "Cockpit"; 
+
         //cockpit.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         ShipPartDisplay shipPartDisplay = cockpit.GetComponent<ShipPartDisplay>();
         ShipPart soCockpit = AssetDatabase.LoadAssetAtPath<ShipPart>("Assets/ShipParts/Cockpit.asset");

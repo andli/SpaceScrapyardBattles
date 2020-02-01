@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,21 @@ public class GameManager : MonoBehaviour
         player = FindObjectOfType<Player>();
 
         this.connectionTargets = new List<ShipPartDisplay>();
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("destroyed GameManager");
+
+    }
+
+    public void onGoButtonPressed() {
+        SceneManager.LoadScene(2);
+    }
+
+    public void onBackButtonPressed()
+    {
+        SceneManager.LoadScene(1);
     }
 
     internal void AddConnectionTarget(ShipPartDisplay shipPartDisplay)
