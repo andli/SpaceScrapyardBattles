@@ -20,21 +20,21 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
 
+            // Cache references to all desired variables
+            player = GetComponent<Player>();
         }
         else
         {
             Destroy(gameObject);
             return;
         }
-        // Cache references to all desired variables
-        player = FindObjectOfType<Player>();
-
+        
         this.connectionTargets = new List<ShipPartDisplay>();
     }
 
     private void OnDestroy()
     {
-        Debug.Log("destroyed GameManager");
+        //Debug.Log("destroyed GameManager");
 
     }
 

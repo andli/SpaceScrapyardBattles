@@ -17,42 +17,7 @@ public class ShipPartDisplay : MonoBehaviour
     private ShipPartDisplay attachingTarget { get; set; }
     public bool BeingDragged { get => beingDragged; set => beingDragged = value; }
 
-    private void FixedUpdate()
-    {
-        // Throttle rotation keystrokes
-        if (beingDragged && Input.GetKey(KeyCode.R))
-        {
-            if (keyTimestamp + rotationCooldown < Time.time)
-            {
-                this.rotate90CW();
-                keyTimestamp = Time.time;
-            }
-        }
-    }
 
-    public void rotate90CW()
-    {
-        // Rotate the artwork sprite
-        SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
-        rs[1].transform.Rotate(new Vector3(0, 0, -90));
-
-        // Set the direction angle on the ship part
-        shipPart.setRotation(rs[1].transform.rotation.eulerAngles);
-
-        // Simulate a OnTriggerExit2D when rotating
-        foreach (ShipPartDisplay item in GameManager.Instance.connectionTargets)
-        {
-            item.GetComponent<OutlineEffect>().StopOutlining();
-        }
-        GameManager.Instance.ClearAllConnectionTargets();
-        this.attachingTarget = null;
-
-        // Simulate a OnTriggerEnter2D when rotating
-        if (this.lastCollisionTarget != null)
-        {
-            attachIfPossible(this.lastCollisionTarget);
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -155,6 +120,11 @@ public class ShipPartDisplay : MonoBehaviour
             return false;
         }
 
+        if (GameManager.Instance.player.ship.positionOccupied(potentialPosition))
+        {
+            return false;
+        }
+
 
         // Check valid placement
         // Check each side of dragged part that has anchors
@@ -195,6 +165,10 @@ public class ShipPartDisplay : MonoBehaviour
             bool validSourceAnchor = this.shipPart.getAnchorInDirection(Directions.Reverse(targetDirection));
             if (validTargetAnchor && validSourceAnchor)
             {
+                if (this.beingDragged)
+                {
+                    this.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                }
                 this.GetComponent<OutlineEffect>().StartOutlining();
                 target.GetComponent<OutlineEffect>().StartOutlining();
                 Debug.Log("Valid attachment!");
@@ -223,6 +197,41 @@ public class ShipPartDisplay : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        // Throttle rotation keystrokes
+        if (beingDragged && Input.GetKey(KeyCode.R))
+        {
+            if (keyTimestamp + rotationCooldown < Time.time)
+            {
+                this.rotate90CW();
+                keyTimestamp = Time.time;
+            }
+        }
+    }
 
+    public void rotate90CW()
+    {
+        // Rotate the artwork sprite
+        SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
+        rs[1].transform.Rotate(new Vector3(0, 0, -90));
+
+        // Set the direction angle on the ship part
+        shipPart.setRotation(rs[1].transform.rotation.eulerAngles);
+
+        // Simulate a OnTriggerExit2D when rotating
+        foreach (ShipPartDisplay item in GameManager.Instance.connectionTargets)
+        {
+            item.GetComponent<OutlineEffect>().StopOutlining();
+        }
+        GameManager.Instance.ClearAllConnectionTargets();
+        this.attachingTarget = null;
+
+        // Simulate a OnTriggerEnter2D when rotating
+        if (this.lastCollisionTarget != null)
+        {
+            attachIfPossible(this.lastCollisionTarget);
+        }
+    }
 
 }

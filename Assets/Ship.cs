@@ -92,4 +92,9 @@ public class Ship
 
     }
 
+    public bool positionOccupied(Vector2Int pos)
+    {
+        return parts[pos.x, pos.y] != null;
+    }
+
 }
