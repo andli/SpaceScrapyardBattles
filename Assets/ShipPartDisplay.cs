@@ -208,6 +208,15 @@ public class ShipPartDisplay : MonoBehaviour
                 keyTimestamp = Time.time;
             }
         }
+
+        if (beingDragged && Input.GetKey(KeyCode.E))
+        {
+            if (keyTimestamp + rotationCooldown < Time.time)
+            {
+                this.rotate90CCW();
+                keyTimestamp = Time.time;
+            }
+        }
     }
 
     public void rotate90CW()
@@ -215,6 +224,30 @@ public class ShipPartDisplay : MonoBehaviour
         // Rotate the artwork sprite
         SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
         rs[1].transform.Rotate(new Vector3(0, 0, -90));
+
+        // Set the direction angle on the ship part
+        shipPart.setRotation(rs[1].transform.rotation.eulerAngles);
+
+        // Simulate a OnTriggerExit2D when rotating
+        foreach (ShipPartDisplay item in GameManager.Instance.connectionTargets)
+        {
+            item.GetComponent<OutlineEffect>().StopOutlining();
+        }
+        GameManager.Instance.ClearAllConnectionTargets();
+        this.attachingTarget = null;
+
+        // Simulate a OnTriggerEnter2D when rotating
+        if (this.lastCollisionTarget != null)
+        {
+            attachIfPossible(this.lastCollisionTarget);
+        }
+    }
+
+    public void rotate90CCW()
+    {
+        // Rotate the artwork sprite
+        SpriteRenderer[] rs = GetComponentsInChildren<SpriteRenderer>(true);
+        rs[1].transform.Rotate(new Vector3(0, 0, 90));
 
         // Set the direction angle on the ship part
         shipPart.setRotation(rs[1].transform.rotation.eulerAngles);
