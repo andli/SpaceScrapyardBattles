@@ -4,33 +4,32 @@ using UnityEngine;
 
 public class ShipMovement : MonoBehaviour
 {
-    public float moveSpeed = 0;
-    public float rotationSpeed = 0;
+    public float moveSpeed;
+    public float acceleration;
+    public float rotationSpeed;
 
     public Rigidbody2D rb;
     public Camera cam;
 
     Vector2 movement;
-    float angle;
+    float angleChange;
     Vector2 mousePos;
 
     // Update is called once per frame
     void Update()
     {
-        //movement.x = Input.GetAxisRaw("Horizontal");
+        movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        angle = Input.GetAxisRaw("Horizontal");
+        angleChange = Input.GetAxisRaw("Horizontal");
 
         //mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-   
-        //Vector2 lookDir = mousePos - rb.position;
-        //float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        moveSpeed -= Mathf.Clamp(acceleration * movement.y, -5f, 5f);
 
-        rb.MoveRotation(rb.rotation + angle * rotationSpeed * Time.fixedDeltaTime);
+        rb.MoveRotation(rb.rotation - angleChange * rotationSpeed * Time.fixedDeltaTime);
+        rb.transform.Translate(Quaternion.Euler(0, 0, angleChange - 90f) * new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
     }
 }
