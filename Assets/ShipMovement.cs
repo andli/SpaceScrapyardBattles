@@ -29,7 +29,8 @@ public class ShipMovement : MonoBehaviour
     {
         moveSpeed -= Mathf.Clamp(acceleration * movement.y, -5f, 5f);
 
-        rb.MoveRotation(rb.rotation - angleChange * rotationSpeed * Time.fixedDeltaTime);
-        rb.transform.Translate(Quaternion.Euler(0, 0, angleChange - 90f) * new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
+        // HACK: disable this temporarily until we can get a proper reference to a rigidbody on the ship
+        //rb.MoveRotation(rb.rotation - angleChange * rotationSpeed * Time.fixedDeltaTime);
+        //rb.transform.Translate(Quaternion.Euler(0, 0, angleChange - 90f) * new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
     }
 }

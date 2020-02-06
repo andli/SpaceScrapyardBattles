@@ -26,6 +26,16 @@ public class Ship
         }
     }
 
+    public Vector2Int getCenterPoint()
+    {
+        return new Vector2Int(this.centerX, this.centerY);
+    }
+
+    public Vector2Int getSize()
+    {
+        return new Vector2Int(parts.GetLength(0), parts.GetLength(1));
+    }
+
     public Vector2Int getShipPartCoordinate(ShipPart existingPart, Direction targetSide)
     {
         if (existingPart.pos.Equals(Vector2Int.zero))
@@ -94,7 +104,14 @@ public class Ship
 
     public bool positionOccupied(Vector2Int pos)
     {
-        return parts[pos.x, pos.y] != null;
+        if (pos.x >= 0 && pos.x < this.parts.GetLength(0))
+        {
+            if (pos.y >= 0 && pos.y < this.parts.GetLength(1))
+            {
+                return parts[pos.x, pos.y] != null;
+            }
+        }
+        return false;
     }
 
 }
