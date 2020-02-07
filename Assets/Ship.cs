@@ -71,6 +71,26 @@ public class Ship
 
     }
 
+    public List<Vector2Int> getNeighbourPositions(Vector2Int pos)
+    {
+        List<Vector2Int> neighbours = new List<Vector2Int>();
+
+        for (int i = pos.x - 1; i <= pos.x + 1; i++)
+        {
+            for (int j = pos.y - 1; j <= pos.y + 1; j++)
+            {
+                if (!new Vector2Int(i,j).Equals(pos))
+                {
+                    if (this.parts[i,j] != null)
+                    {
+                        neighbours.Add(this.parts[i, j].pos);
+                    }
+                }
+            }
+        }
+        return neighbours;
+    }
+
     public (bool,bool) getNeighbourExistsAndAnchor(Vector2Int potentialPosition, Direction sourceDirection)
     {
         Vector2Int checkVector = Directions.directionToVector(sourceDirection);
@@ -91,7 +111,7 @@ public class Ship
         newPart.isAttached = true;
 
         parts[newPart.pos.x, newPart.pos.y] = newPart;
-
+        existingPart.AddConnection(newPart);
     }
 
     public void addStartingShipPart(ShipPart newPart)

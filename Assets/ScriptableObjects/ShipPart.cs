@@ -114,6 +114,11 @@ public enum Direction : ushort
 public class ShipPart : ScriptableObject
 {
     new public string name = "New item";
+    public List<ShipPart> connectedTo;
+    internal void AddConnection(ShipPart newPart)
+    {
+        this.connectedTo.Add(newPart);
+    }
 
     public Sprite artwork;
 

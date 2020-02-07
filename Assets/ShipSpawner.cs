@@ -16,7 +16,6 @@ public class ShipSpawner : MonoBehaviour
          */
 
         Ship ship = GameManager.Instance.player.ship;
-        GameObject shipPartPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ShipPart.prefab");
         GameObject shipComponentPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/ShipComponent.prefab");
 
         // Spiral out around the center
@@ -26,7 +25,7 @@ public class ShipSpawner : MonoBehaviour
 
     private void populateShip(GameObject shipAssembly, Ship ship, GameObject shipComponentPrefab)
     {
-        List<GameObject> components = new List<GameObject>();
+        List<ShipComponent> components = new List<ShipComponent>();
 
         int x = 0; // current position; x
         int y = 0; // current position; y
@@ -51,9 +50,8 @@ public class ShipSpawner : MonoBehaviour
                     {
                         GameObject tmpGo = this.tmpSpawnPart(ship, shipComponentPrefab, arrayPos);
                         tmpGo.transform.SetParent(shipAssembly.transform);
-                        components.Add(tmpGo);
+                        components.Add(tmpGo.GetComponent<ShipComponent>());
                         Debug.Log(arrayPos);
-
                     }
 
                     c++;
@@ -69,6 +67,24 @@ public class ShipSpawner : MonoBehaviour
                 d = (d + 1) % 4;
             }
             s = s + 1;
+        }
+
+        // Look at all placed components
+        foreach (ShipComponent sc in components)
+        {
+            // Loop possible neighbours
+            foreach (ShipPart neighbour in sc.GetComponent<ShipComponent>().shipPart.connectedTo)
+            {
+                if (!neighbour.Equals(sc)) //TODO: check for duplicate joints
+                {
+                    // Add a joint between tmpGo and the already created ShipComponent sc
+                    FixedJoint2D joint = sc.gameObject.AddComponent<FixedJoint2D>();
+                    ShipComponent target = components.Find(comp => comp.shipPart.Equals(neighbour));
+                    joint.connectedBody = target.GetComponent<Rigidbody2D>();
+
+                }
+                
+            }
         }
     }
 
@@ -90,9 +106,4 @@ public class ShipSpawner : MonoBehaviour
         return go;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
