@@ -86,6 +86,9 @@ public class ShipSpawner : MonoBehaviour
                 
             }
         }
+
+        // Set the steering rigidbody
+        shipAssembly.GetComponent<ShipMovement>().rb = components.Find(comp => comp.name == "Cockpit").GetComponent<Rigidbody2D>();
     }
 
     private GameObject tmpSpawnPart(Ship ship, GameObject shipComponentPrefab, Vector2Int arrayPos)

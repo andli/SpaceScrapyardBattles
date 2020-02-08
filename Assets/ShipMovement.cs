@@ -8,12 +8,12 @@ public class ShipMovement : MonoBehaviour
     public float acceleration;
     public float rotationSpeed;
 
-    public Rigidbody2D rb;
     public Camera cam;
+    public Rigidbody2D rb;
 
     Vector2 movement;
     float angleChange;
-    Vector2 mousePos;
+    //Vector2 mousePos;
 
     // Update is called once per frame
     void Update()
@@ -29,8 +29,7 @@ public class ShipMovement : MonoBehaviour
     {
         moveSpeed -= Mathf.Clamp(acceleration * movement.y, -5f, 5f);
 
-        // HACK: disable this temporarily until we can get a proper reference to a rigidbody on the ship
-        //rb.MoveRotation(rb.rotation - angleChange * rotationSpeed * Time.fixedDeltaTime);
-        //rb.transform.Translate(Quaternion.Euler(0, 0, angleChange - 90f) * new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
+        rb.MoveRotation(rb.rotation - angleChange * rotationSpeed * Time.fixedDeltaTime);
+        rb.transform.Translate(Quaternion.Euler(0, 0, angleChange - 90f) * new Vector3(moveSpeed, 0, 0) * Time.deltaTime);
     }
 }
