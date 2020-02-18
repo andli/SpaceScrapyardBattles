@@ -10,5 +10,6 @@ Epic multiplayer build-your-own-ship space combat.
   4. Install the recommended version of Unity
 2. Open up the project
 3. Install the required packages and addins
+  1. Under the Project tab, select the TextMeshPro asset and right click, "Reimport"
 4. Code away!
   
